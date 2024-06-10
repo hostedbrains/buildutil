@@ -140,7 +140,7 @@ func init() {
 	} else {
 		// file does not exist
 		fmt.Printf("Version File does not exist: %s\n", versionFile)
-		fmt.Println("Runt the 'buildutil --initVersion' first!")
+		fmt.Println("Run the 'buildutil --initVersion' first!")
 		os.Exit(1)
 	}
 	//rootCmd.MarkPersistentFlagRequired("region")
