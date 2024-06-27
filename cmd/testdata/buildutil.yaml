@@ -1,0 +1,4 @@
+buildutil:
+    version:
+        file: .version
+        path: ./

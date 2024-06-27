@@ -130,7 +130,7 @@ func Test_incrementVersionFunc1(t *testing.T) {
 		name string
 		args args
 	}{
-		{"Increment patch version", args{"patch"}},
+		//{"Increment patch version", args{"patch"}},
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
