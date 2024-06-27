@@ -98,7 +98,7 @@ When you use the --withLDFlags or -f flag build is done with the following LDFla
 main.Version sets the version number within your application or module code to the version in your .version file.
 main.BuildTime sets the BuildTime variable in your application or module to the current date and time when executing a build.
 main.GitHash sets the GitHash variable in your application or module to the short version of your commit has as obtained by executing:
-&nbsp;&nbsp;&nbsp;&nbsp;git rev-parse --short HEAD
+  git rev-parse --short HEAD
 ```
 >#### Examples
 > ```console
