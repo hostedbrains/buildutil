@@ -132,6 +132,11 @@ func init() {
 	//fmt.Printf("Version file path: %s\n", viper.GetString("buildutil.version.path"))
 	versionFile = viper.GetString("buildutil.version.path") + viper.GetString("buildutil.version.file")
 	//fmt.Printf("Version File: %s\n", versionFile)
+
+	//rootCmd.MarkPersistentFlagRequired("region")
+}
+
+func checkVersionFile() {
 	var tools toolbox.Tools
 
 	if tools.CheckFileExist(versionFile) {
@@ -140,10 +145,10 @@ func init() {
 	} else {
 		// file does not exist
 		fmt.Printf("Version File does not exist: %s\n", versionFile)
+		fmt.Printf("Init version file flag value: %s\n", initVersionFile)
 		fmt.Println("Run the 'buildutil --initVersion' first!")
 		os.Exit(1)
 	}
-	//rootCmd.MarkPersistentFlagRequired("region")
 }
 
 func check(e error) {
@@ -158,6 +163,7 @@ func trimFirstRune(s string) string {
 }
 
 func incrementVersionFunc(semver string) {
+	checkVersionFile()
 	// Read the current version file
 	dat, err := os.ReadFile(".version")
 
@@ -215,6 +221,7 @@ func createBuildutilConfigFile() {
 
 func buildModule(withLDFlags bool) {
 	// Check if LDFlags to be included
+	checkVersionFile()
 	if withLDFlags {
 		// Get the version from the version file
 		dat, err := os.ReadFile(viper.GetString("buildutil.version.path") + viper.GetString("buildutil.version.file"))
