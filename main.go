@@ -17,7 +17,7 @@ package main
 
 import "github.com/hostedbrains/buildutil/cmd"
 
-var Version string = "v1.0.2"
+var Version string = "v0.3.1"
 var BuildTime string = "2024-05-30T19:43:41Z"
 var GitHash string = "5a96c6a"
 
