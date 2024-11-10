@@ -219,6 +219,35 @@ func createBuildutilConfigFile() {
 	}
 }
 
+func updateBuildutilConfigFile(version string, buildDate string, gitHash string) {
+	//fmt.Println("Updating buildutil config file")
+	// Get current working directory
+	currentWD, err := os.Getwd()
+	cobra.CheckErr(err)
+	// Search config in home directory with name ".testing" (without extension).
+	viper.AddConfigPath(currentWD)
+	viper.SetConfigType("yaml")
+	viper.SetConfigName("buildutil")
+	viper.SetConfigFile("./buildutil.yaml")
+	err = viper.ReadInConfig()
+	if err != nil {
+		fmt.Printf("Error reading config file, %s", err)
+		return
+	}
+	//fmt.Println("Config file found:", viper.ConfigFileUsed())
+	//fmt.Println("Config: ", viper.AllSettings())
+	viper.Set("buildutil.versiondata.version", version)
+	viper.Set("buildutil.versiondata.builddate", buildDate)
+	viper.Set("buildutil.versiondata.githash", gitHash)
+	// Save the updated configuration to the file
+	err = viper.WriteConfig()
+	if err != nil {
+		fmt.Printf("Error writing config file, %s", err)
+	} else {
+		fmt.Println("Configuration written successfully")
+	}
+}
+
 func buildModule(withLDFlags bool) {
 	// Check if LDFlags to be included
 	checkVersionFile()
@@ -249,6 +278,7 @@ func buildModule(withLDFlags bool) {
 		ldflags := "-ldflags=-s -X 'main.Version=" + verString + "' -X 'main.BuildTime=" + buildDateTime + "' -X 'main.GitHash=" + gitHashString + "'"
 		fmt.Println("LDFlags: " + ldflags)
 		// Set the LDFlags for the build
+		updateBuildutilConfigFile(verString, buildDateTime, gitHashString)
 		executeBuild(ldflags)
 	} else {
 		executeBuild("")
