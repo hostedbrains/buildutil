@@ -76,6 +76,10 @@ The buildutil CLI allows you to increment your version parts.`,
 			fmt.Println("Build Date and Time: " + BuildTime)
 			fmt.Println("Git Hash: " + GitHash)
 		}
+		if updateVersionData {
+			fmt.Println("Updating version Data")
+			updateVersionDataFunc()
+		}
 	},
 }
 
@@ -87,6 +91,7 @@ var setup bool
 var build bool
 var version bool
 var withLDFlags bool
+var updateVersionData bool
 var output string
 var Version = "v1.0.2"
 var BuildTime = "2024-05-30T19:43:41Z"
@@ -125,6 +130,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&build, "build", "b", false, "Build the module")
 	rootCmd.PersistentFlags().BoolVarP(&version, "version", "v", false, "Print version information")
 	rootCmd.PersistentFlags().BoolVarP(&withLDFlags, "withLDFlags", "f", false, "Include LDFlags with the build.")
+	rootCmd.PersistentFlags().BoolVarP(&updateVersionData, "updateVersionData", "u", false, "Update the version data in main.go.")
 	rootCmd.PersistentFlags().StringVarP(&output, "output", "o", "", "Build output e.g. '-o bin/moduleName' (required if build is set)")
 
 	rootCmd.MarkFlagsRequiredTogether("build", "output")
@@ -288,6 +294,7 @@ func buildModule(withLDFlags bool) {
 
 func executeBuild(flags string) {
 	// Build the module
+	updateVersionDataFunc()
 	cmd := exec.Command("go", "build", flags, "-o", output, ".")
 	fmt.Println("Build Command to execute: ", cmd)
 	// Check if there is an error running the command
@@ -348,4 +355,41 @@ func initConfig() {
 	}
 
 	//fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+}
+
+func updateVersionDataFunc() {
+	var tools toolbox.Tools
+	fmt.Println("Inside the update version data function.")
+	var versionData = tools.LoadVersionInfo("buildutil", "yaml", "buildutil.yaml")
+	var version = versionData.Version
+	var buildTime = versionData.Builddate
+	var gitHash = versionData.Githash
+	//fmt.Println("Version: ", version)
+	fileNamePath := "main.go"
+	dat, err := os.ReadFile(fileNamePath)
+
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+	}
+
+	lines := strings.Split(string(dat), "\n")
+
+	for i, line := range lines {
+		if strings.Contains(line, "var Version string") {
+			lines[i] = "var Version string = \"" + version + "\""
+		}
+		if strings.Contains(line, "var BuildTime string") {
+			lines[i] = "var BuildTime string = \"" + buildTime + "\""
+		}
+		if strings.Contains(line, "var GitHash string") {
+			lines[i] = "var GitHash string = \"" + gitHash + "\""
+		}
+	}
+
+	output := strings.Join(lines, "\n")
+
+	err = os.WriteFile("./main.go", []byte(output), 0644)
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+	}
 }
