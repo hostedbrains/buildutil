@@ -1,20 +1,23 @@
+// Package cmd Copyright (c) 2024 Hostedbrains.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 package cmd
-
-/*
-Copyright © 2024 Hendry Taylor hendry.taylor@icloud.com
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 
 import (
 	"errors"
@@ -93,9 +96,15 @@ var version bool
 var withLDFlags bool
 var updateVersionData bool
 var output string
-var Version = "v1.0.2"
-var BuildTime = "2024-05-30T19:43:41Z"
-var GitHash = "5a96c6a"
+
+// Version defines the current semantic version of the application.
+var Version = "v0.3.3"
+
+// BuildTime indicates the date and time when the application build was created, formatted in ISO 8601.
+var BuildTime = "2025-02-01T23:26:24"
+
+// GitHash contains the shortened Git commit hash representing the current state of the codebase during build time.
+var GitHash = "22676ee"
 var versionFile = "./.version"
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -151,7 +160,7 @@ func checkVersionFile() {
 	} else {
 		// file does not exist
 		fmt.Printf("Version File does not exist: %s\n", versionFile)
-		fmt.Printf("Init version file flag value: %s\n", initVersionFile)
+		fmt.Printf("Init version file flag value: %v\n", initVersionFile)
 		fmt.Println("Run the 'buildutil --initVersion' first!")
 		os.Exit(1)
 	}
@@ -172,23 +181,28 @@ func incrementVersionFunc(semver string) {
 	checkVersionFile()
 	// Read the current version file
 	dat, err := os.ReadFile(".version")
-
 	check(err)
 	fmt.Println(string(dat))
 	// Extract version parts from the string as Major, Minor and Patch
 	verString := trimFirstRune(string(dat))
 	s := strings.Split(verString, ".")
 	major, err := strconv.ParseInt(s[0], 0, 64)
+	check(err)
 	minor, err := strconv.ParseInt(s[1], 0, 64)
+	check(err)
 	patch, err := strconv.ParseInt(s[2], 0, 64)
+	check(err)
 
 	fmt.Printf("Current version = Major: %d, Minor: %d, Patch: %d\n", major, minor, patch)
 	// Increment correct part of version
 	switch semver {
 	case "major":
 		major++
+		minor = 0
+		patch = 0
 	case "minor":
 		minor++
+		patch = 0
 	case "patch":
 		patch++
 	}
@@ -337,7 +351,7 @@ func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 	//fmt.Printf("Setup flag value: %t\n", setup)
 	// If a config file is found, read it in.
-	if setup == false {
+	if !setup {
 		// If a config file is found, read it in.
 		if err := viper.ReadInConfig(); err != nil {
 			var configFileNotFoundError viper.ConfigFileNotFoundError
@@ -366,6 +380,10 @@ func updateVersionDataFunc() {
 	var gitHash = versionData.Githash
 	//fmt.Println("Version: ", version)
 	fileNamePath := "main.go"
+	if _, err := os.Stat(fileNamePath); os.IsNotExist(err) {
+		fmt.Printf("File %v does not exist\n", fileNamePath)
+		return
+	}
 	dat, err := os.ReadFile(fileNamePath)
 
 	if err != nil {
