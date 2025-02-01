@@ -4,7 +4,7 @@ UTIL_BINARY=buildutil
 .PHONY: build
 build:
 	@echo "Building buildutil binary..."
-	@go build -o bin/${UTIL_BINARY}
+	@env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 ./bin/buildutil --build --output bin/${UTIL_BINARY}-amd64-linux --withLDFlags
 	@echo "Done!"
 
 .PHONY: test

@@ -295,7 +295,7 @@ func buildModule(withLDFlags bool) {
 func executeBuild(flags string) {
 	// Build the module
 	updateVersionDataFunc()
-	cmd := exec.Command("go", "build", flags, "-o", output, ".")
+	cmd := exec.Command("go", "build CGO_ENABLED=0 ", flags, "-o", output, ".")
 	fmt.Println("Build Command to execute: ", cmd)
 	// Check if there is an error running the command
 	if errors.Is(cmd.Err, exec.ErrDot) {

@@ -18,8 +18,8 @@ package main
 import "github.com/hostedbrains/buildutil/cmd"
 
 var Version string = "v0.3.3"
-var BuildTime string = "2024-11-12T20:13:46"
-var GitHash string = "611686e"
+var BuildTime string = "2025-02-01T23:07:24"
+var GitHash string = "54e1016"
 
 func main() {
 	cmd.Execute(Version, BuildTime, GitHash)
