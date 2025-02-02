@@ -13,14 +13,21 @@ STATICCHECK = $(GOBIN)/staticcheck
 .PHONY: build
 build: test lint scan build_linux
 	@echo "Building buildutil binary..."
-	@env CGO_ENABLED=0 ./bin/buildutil --build --output bin/${UTIL_BINARY} --withLDFlags
+	@env CGO_ENABLED=0 buildutil --build --output bin/${UTIL_BINARY} --withLDFlags
 	@echo "Done!"
 
 ## build: builds the buildutil binary for Linux OS
 .PHONY: build_linux
 build_linux:
 	@echo "Building buildutil binary..."
-	@env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 ./bin/buildutil --build --output bin/${UTIL_BINARY}-amd64-linux --withLDFlags
+	@env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 buildutil --build --output bin/${UTIL_BINARY}-amd64-linux --withLDFlags
+	@echo "Done!"
+
+## build: builds the buildutil binary for Mac OS
+.PHONY: build_mac
+build_mac:
+	@echo "Building buildutil binary..."
+	@env GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 buildutil --build --output bin/${UTIL_BINARY} --withLDFlags
 	@echo "Done!"
 
 ## test: executes tests

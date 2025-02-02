@@ -25,10 +25,10 @@ import "github.com/hostedbrains/buildutil/cmd"
 var Version string = "v0.4.0"
 
 // BuildTime represents the build timestamp of the application, typically set during the build process.
-var BuildTime string = "2025-02-01T23:43:17"
+var BuildTime string = "2025-02-02T00:34:52"
 
 // GitHash represents the current Git commit hash of the application's source code, often set during the build process.
-var GitHash string = "22676ee"
+var GitHash string = "a942c8a"
 
 func main() {
 	cmd.Execute(Version, BuildTime, GitHash)
