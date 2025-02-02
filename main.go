@@ -22,7 +22,7 @@ package main
 import "github.com/hostedbrains/buildutil/cmd"
 
 // Version indicates the current version of the application as a semantic version string.
-var Version string = "v0.3.3"
+var Version string = "v0.4.0"
 
 // BuildTime represents the build timestamp of the application, typically set during the build process.
 var BuildTime string = "2025-02-01T23:43:17"

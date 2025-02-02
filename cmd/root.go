@@ -98,7 +98,7 @@ var updateVersionData bool
 var output string
 
 // Version defines the current semantic version of the application.
-var Version = "v0.3.3"
+var Version = "v0.4.0"
 
 // BuildTime indicates the date and time when the application build was created, formatted in ISO 8601.
 var BuildTime = "2025-02-01T23:26:24"
