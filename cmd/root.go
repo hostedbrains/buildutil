@@ -98,7 +98,7 @@ var updateVersionData bool
 var output string
 
 // Version defines the current semantic version of the application.
-var Version = "v0.4.0"
+var Version = "v0.4.1"
 
 // BuildTime indicates the date and time when the application build was created, formatted in ISO 8601.
 var BuildTime = "2025-02-01T23:26:24"
@@ -295,7 +295,7 @@ func buildModule(withLDFlags bool) {
 		}
 		gitHashString := strings.TrimRight(out.String(), "\n")
 		//fmt.Printf("Git Hash: %q\n", gitHashString)
-		ldflags := "-ldflags=-s -X 'main.Version=" + verString + "' -X 'main.BuildTime=" + buildDateTime + "' -X 'main.GitHash=" + gitHashString + "'"
+		ldflags := "-ldflags=\\\"-s -X 'main.Version=" + verString + "' -X 'main.BuildTime=" + buildDateTime + "' -X 'main.GitHash=" + gitHashString + "'\\\""
 		fmt.Println("LDFlags: " + ldflags)
 		// Set the LDFlags for the build
 		updateBuildutilConfigFile(verString, buildDateTime, gitHashString)
@@ -309,7 +309,8 @@ func buildModule(withLDFlags bool) {
 func executeBuild(flags string) {
 	// Build the module
 	updateVersionDataFunc()
-	cmd := exec.Command("go", "build CGO_ENABLED=0 ", flags, "-o", output, ".")
+	//cmd := exec.Command("go", "build CGO_ENABLED=0 ", flags, "-o", output, ".")
+	cmd := exec.Command("go", "build", flags, "-o", output, ".")
 	fmt.Println("Build Command to execute: ", cmd)
 	// Check if there is an error running the command
 	if errors.Is(cmd.Err, exec.ErrDot) {
