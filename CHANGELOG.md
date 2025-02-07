@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/hostedbrains/buildutil/compare/buildutil@v0.4.0...buildutil@v0.4.1) (2025-02-02)
+
+
+### Bug Fixes
+
+* Fixed issue with LDFlags in build ([1e1a4d8](https://github.com/hostedbrains/buildutil/commit/1e1a4d82d675e613ee2284224cf1679201c18adf))
+
 ## [0.4.0](https://github.com/hostedbrains/buildutil/compare/buildutil-v0.3.0...buildutil@v0.4.0) (2025-02-01)
 
 
