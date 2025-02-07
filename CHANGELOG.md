@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/hostedbrains/buildutil/compare/buildutil@v0.4.1...buildutil@v0.5.0) (2025-02-07)
+
+
+### Features
+
+* Extended the version output ([fe485dc](https://github.com/hostedbrains/buildutil/commit/fe485dcc19d50b4d6f04fcce78a0bde39c4eab68))
+
 ## [0.4.1](https://github.com/hostedbrains/buildutil/compare/buildutil@v0.4.0...buildutil@v0.4.1) (2025-02-02)
 
 
