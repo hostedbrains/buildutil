@@ -23,6 +23,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/hostedbrains/toolbox"
+	"gopkg.in/yaml.v3"
 	"log"
 	"os"
 	"os/exec"
@@ -78,6 +79,8 @@ The buildutil CLI allows you to increment your version parts.`,
 			fmt.Println("Version: " + Version)
 			fmt.Println("Build Date and Time: " + BuildTime)
 			fmt.Println("Git Hash: " + GitHash)
+			printYAMLFile("buildutil.yaml")
+			printTextFile(".version")
 		}
 		if updateVersionData {
 			fmt.Println("Updating version Data")
@@ -411,4 +414,52 @@ func updateVersionDataFunc() {
 	if err != nil {
 		fmt.Println("Error reading file:", err)
 	}
+}
+
+func printYAMLFile(fileName string) error {
+	// Check if the file exists
+	if _, err := os.Stat(fileName); os.IsNotExist(err) {
+		return fmt.Errorf("file does not exist: %s", fileName)
+	}
+
+	// Read the file
+	data, err := os.ReadFile(fileName)
+	if err != nil {
+		return fmt.Errorf("error reading file: %v", err)
+	}
+
+	// Unmarshal the YAML data into a map
+	var content map[string]interface{}
+	err = yaml.Unmarshal(data, &content)
+	if err != nil {
+		return fmt.Errorf("error unmarshalling YAML: %v", err)
+	}
+
+	// Marshal the map back to a YAML formatted string
+	formattedData, err := yaml.Marshal(&content)
+	if err != nil {
+		return fmt.Errorf("error marshalling YAML: %v", err)
+	}
+
+	// Print the nicely formatted YAML content
+	fmt.Printf("Contents of '%s':\n%s\n", fileName, string(formattedData))
+	return nil
+}
+
+// printTextFile reads a text file and prints its contents in the same format.
+func printTextFile(fileName string) error {
+	// Check if the file exists
+	if _, err := os.Stat(fileName); os.IsNotExist(err) {
+		return fmt.Errorf("file does not exist: %s", fileName)
+	}
+
+	// Read the file
+	data, err := os.ReadFile(fileName)
+	if err != nil {
+		return fmt.Errorf("error reading file: %v", err)
+	}
+
+	// Print the file content
+	fmt.Printf("Contents of '%s':\n%s\n", fileName, string(data))
+	return nil
 }

@@ -11,7 +11,7 @@ STATICCHECK = $(GOBIN)/staticcheck
 
 ## build: builds the buildutil binary for current OS
 .PHONY: build
-build: test lint scan build_linux
+build: test lint scan build_linux build_mac
 	@echo "Building buildutil binary..."
 	@env CGO_ENABLED=0 buildutil --build --output bin/${UTIL_BINARY} --withLDFlags
 	@echo "Done!"

@@ -22,13 +22,13 @@ package main
 import "github.com/hostedbrains/buildutil/cmd"
 
 // Version indicates the current version of the application as a semantic version string.
-var Version string = "v0.4.1"
+var Version string = "v0.5.0"
 
 // BuildTime represents the build timestamp of the application, typically set during the build process.
-var BuildTime string = "2025-02-02T01:01:57"
+var BuildTime string = "2025-02-07T20:36:47"
 
 // GitHash represents the current Git commit hash of the application's source code, often set during the build process.
-var GitHash string = "70ff4d3"
+var GitHash string = "1e1a4d8"
 
 func main() {
 	cmd.Execute(Version, BuildTime, GitHash)

@@ -304,3 +304,46 @@ func Test_trimFirstRune1(t *testing.T) {
 		})
 	}
 }
+
+func TestPrintTextFile(t *testing.T) {
+	tests := []struct {
+		name     string
+		fileName string
+		wantErr  bool
+	}{
+		{"File exists", "testdata/.version", false},
+		{"File does not exist", "testdata/nonexistent.txt", true},
+		{"Empty file", "testdata/empty.txt", false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := printTextFile(tt.fileName)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("printTextFile() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestPrintYAMLFile(t *testing.T) {
+	tests := []struct {
+		name     string
+		fileName string
+		wantErr  bool
+	}{
+		{"File exists", "testdata/buildutil.yaml", false},
+		{"File does not exist", "testdata/nonexistent.yaml", true},
+		{"Empty file", "testdata/empty.yaml", false},
+		{"Invalid YAML file", "testdata/invalid.yaml", true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := printYAMLFile(tt.fileName)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("printYAMLFile() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
