@@ -45,8 +45,12 @@ Firstly buildutil.yaml, is used to configure buildutil and has the following con
 ```yaml
 buildutil:
   version:
-    path: "./"
-    file: ".version"
+    file: .version
+    path: ./
+  versiondata:
+    builddate: 2025-02-07T20:36:47
+    githash: 1e1a4d8
+    version: v0.5.0
 ```
 `buildutil.version.path` specifies the path to your version file, default is "./"  
 `buildutil.version.file` specifies the version file name, default is ".version"  
